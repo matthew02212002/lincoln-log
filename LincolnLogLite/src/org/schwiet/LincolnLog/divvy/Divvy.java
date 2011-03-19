@@ -8,6 +8,11 @@ package org.schwiet.LincolnLog.divvy;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.schwiet.LincolnLog.divvy.DivvyUtility.DivvyType;
@@ -26,6 +31,7 @@ import org.schwiet.LincolnLog.ui.painters.GlassPainter;
  * render a Divvy in a List
  * @author sethschwiethale
  */
+@Entity
 public class Divvy {
     private Long id;
     private String name;
@@ -55,6 +61,8 @@ public class Divvy {
      * returns the DB index for this {@link Divvy}
      * @return
      */
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -159,8 +167,13 @@ public class Divvy {
      * returns an immutable copy of this {@link Divvy}'s {@link Transactions}
      * @return
      */
+    @OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "owner")
     public Set<Transaction> getTransactions(){
         return Collections.unmodifiableSet(transactions);
+    }
+
+    public void setTransactions(Set<Transaction> transactions){
+        this.transactions = transactions;
     }
     /**
      * for use with ListUI

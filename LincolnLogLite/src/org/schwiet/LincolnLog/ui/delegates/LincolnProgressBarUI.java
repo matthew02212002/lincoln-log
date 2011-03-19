@@ -4,7 +4,6 @@
  */
 package org.schwiet.LincolnLog.ui.delegates;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,7 +12,6 @@ import java.awt.LinearGradientPaint;
 import java.awt.RenderingHints;
 import javax.swing.JComponent;
 import javax.swing.JProgressBar;
-import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 /**
