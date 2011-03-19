@@ -4,11 +4,11 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
     <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
-    <property name="hibernate.connection.url">jdbc:hsqldb:data/test</property>
+    <property name="hibernate.connection.url">jdbc:hsqldb:data/db</property>
     <property name="hibernate.connection.username">sa</property>
     <property name="hibernate.connection.password"/>
     <property name="connection.shutdown">true</property>
-    <property name="connection.pool_size">1</property>
+    <property name="connection.pool_size">0</property>
     <!-- Enable Hibernate's automatic session context management -->
     <property name="current_session_context_class">thread</property>
     <!-- Disable the second-level cache -->
@@ -16,5 +16,7 @@
     <!-- Echo all executed SQL to stdout -->
     <property name="show_sql">false</property>
     <property name="jdbc.batch_size">0</property>
+    <mapping class="org.schwiet.LincolnLog.divvy.Divvy"/>
+    <mapping class="org.schwiet.LincolnLog.transaction.Transaction"/>
   </session-factory>
 </hibernate-configuration>

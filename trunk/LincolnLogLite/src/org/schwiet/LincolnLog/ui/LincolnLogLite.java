@@ -25,6 +25,7 @@ import org.schwiet.LincolnLog.divvy.DivvyForm;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.divvy.DivvyUtility;
 import org.schwiet.LincolnLog.divvy.commands.DeleteDivviesCommand;
+import org.schwiet.LincolnLog.persistence.HibernateUtil;
 import org.schwiet.LincolnLog.transaction.ui.NewTransactionForm;
 import org.schwiet.LincolnLog.ui.command.CommandDispatch;
 import org.schwiet.LincolnLog.ui.components.BottomBarPanel;
@@ -263,6 +264,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
      */
 
     private void tweak() {
+        HibernateUtil.getSessionFactory();
         addDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_16.png"));
         removeDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/remove_16.png"));
         bottomBar = ComponentFactory.getBottomBar();
