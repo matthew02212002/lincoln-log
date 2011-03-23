@@ -46,7 +46,9 @@ public class Divvy {
     /**
      * for Hibernate
      */
-    public Divvy(){}
+    public Divvy(){
+        panel = DivvyUtility.getDivvyCellRenderer("loading...", 0, 0);
+    }
     
     /**
      * default constructor for persistence
@@ -88,6 +90,8 @@ public class Divvy {
      */
     public void setAmount(double amount) {
         this.amount = amount;
+        panel.setAmount(amount);
+        recalculate();
     }
     /**
      * returns the {@link DivvyType} of this {@link Divvy} determining some of
@@ -120,6 +124,7 @@ public class Divvy {
      */
     public void setName(String name) {
         this.name = name;
+        this.panel.setNameText(name);
     }
     /**
      * adds a {@link Transaction} to this {@link Divvy}. This does not change

@@ -31,6 +31,10 @@ public class CommandDispatch {
     static Logger logger = Logger.getLogger(CommandDispatch.class);
 
     private CommandDispatch() {
+        /*
+         * single thread responsible for handling data, including calls manipulating
+         * the database
+         */
         runQueue = Executors.newSingleThreadExecutor();
         commands = new LinkedList<Command>();
     }
@@ -63,6 +67,15 @@ public class CommandDispatch {
             }
         });
         }
+    }
+
+    /**
+     * utilitiy method allowing for a snippet of code to be run on the
+     * {@link org.schwiet.LincolnLog.ui.command.CommandDispatch} worker thread
+     * @param runnable
+     */
+    public void performRunnable(final Runnable runnable){
+        runQueue.execute(runnable);
     }
 
     /**

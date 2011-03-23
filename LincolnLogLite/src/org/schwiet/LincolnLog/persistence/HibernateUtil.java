@@ -32,6 +32,7 @@ public class HibernateUtil {
      */
     private static SessionFactory buildSessionFactory() {
         try {
+//            logger.info("Configuring Data, creating Session Factory");
 // Create the SessionFactory from hibernate.cfg.xml
             config = new Configuration();
             config.configure();
@@ -51,7 +52,7 @@ public class HibernateUtil {
      * this application
      * @return
      */
-    public static SessionFactory getSessionFactory() {
+    protected static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
     /**

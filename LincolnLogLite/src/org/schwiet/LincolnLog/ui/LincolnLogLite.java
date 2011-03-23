@@ -69,7 +69,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
 
     /** Creates new form LincolnLogLite */
     public LincolnLogLite() {
-        BasicConfigurator.configure();
+//        BasicConfigurator.configure();
         /*
          *
          */
@@ -264,7 +264,6 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
      */
 
     private void tweak() {
-        HibernateUtil.getSessionFactory();
         addDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_16.png"));
         removeDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/remove_16.png"));
         bottomBar = ComponentFactory.getBottomBar();

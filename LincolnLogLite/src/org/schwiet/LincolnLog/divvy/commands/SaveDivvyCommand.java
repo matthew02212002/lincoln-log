@@ -5,8 +5,10 @@
 
 package org.schwiet.LincolnLog.divvy.commands;
 
+import org.hibernate.HibernateException;
 import org.schwiet.LincolnLog.divvy.Divvy;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
+import org.schwiet.LincolnLog.persistence.PersistenceManager;
 import org.schwiet.LincolnLog.ui.command.Command;
 
 /**
@@ -27,6 +29,11 @@ public class SaveDivvyCommand implements Command{
     }
 
     public void execute() {
+        try{
+            PersistenceManager.saveDivvy(divvy);
+        }catch(Exception e){
+            return;
+        }
         manager.addDivvy(divvy);
     }
 
@@ -43,6 +50,6 @@ public class SaveDivvyCommand implements Command{
     }
 
     public String getCommandName() {
-        return "Save "+divvy.getName();
+        return String.format("Save %1$s", divvy.getName());
     }
 }

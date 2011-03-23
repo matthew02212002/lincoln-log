@@ -4,6 +4,7 @@
  */
 package org.schwiet.LincolnLog.divvy;
 
+import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
@@ -15,11 +16,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AbstractDocument;
-import org.schwiet.LincolnLog.divvy.DivvyUtility.DivvyType;
+import org.apache.log4j.Logger;
+import org.schwiet.LincolnLog.persistence.PersistenceManager;
 import org.schwiet.LincolnLog.transaction.AmountColumnEditorFilter;
 import org.schwiet.LincolnLog.transaction.Transaction;
 import org.schwiet.LincolnLog.transaction.TransactionTableModel;
 import org.schwiet.LincolnLog.transaction.TransactionTableModel.TransactionColumn;
+import org.schwiet.LincolnLog.ui.command.CommandDispatch;
 
 /**
  *
@@ -35,6 +38,8 @@ public class DivvyManager implements ListSelectionListener {
      */
     private JComboBox divvyColumnEditor = new JComboBox();
     private JTextField amountColumnEditor = new JTextField();
+
+    private static final Logger logger = Logger.getLogger(DivvyManager.class);
     /*
      * unmodifiable
      */
@@ -45,12 +50,25 @@ public class DivvyManager implements ListSelectionListener {
         /*
          * TODO: load from DB
          */
-        Divvy groc = new Divvy("Groceries", 250.00, DivvyType.EXPENSE);
-        addDivvy(groc);
-        addDivvy(new Divvy("Restaraunts", 250.00, DivvyType.EXPENSE));
-        addDivvy(new Divvy("Gas", 250.00, DivvyType.EXPENSE));
-        addDivvy(new Divvy("Utilities", 250.00, DivvyType.EXPENSE));
-        groc.addTransaction(Transaction.getInstance(groc, "test 1", "safeway", 32.00, System.currentTimeMillis()));
+//        Divvy groc = new Divvy("Groceries", 250.00, DivvyType.EXPENSE);
+//        addDivvy(groc);
+//        addDivvy(new Divvy("Restaraunts", 250.00, DivvyType.EXPENSE));
+//        addDivvy(new Divvy("Gas", 250.00, DivvyType.EXPENSE));
+//        addDivvy(new Divvy("Utilities", 250.00, DivvyType.EXPENSE));
+//        groc.addTransaction(Transaction.getInstance(groc, "test 1", "safeway", 32.00, System.currentTimeMillis()));
+        Runnable loadingTask = new Runnable(){
+
+            public void run() {
+                try {
+                    PersistenceManager.loadDivvies(INSTANCE);
+                } catch (Exception ex) {
+                    logger.error("could not load the Divvies");
+                }
+            }
+
+        };
+        //run the loading on CommandDispatch's worker thread
+        CommandDispatch.getInstance().performRunnable(loadingTask);
     }
     /*
      * 
@@ -65,6 +83,16 @@ public class DivvyManager implements ListSelectionListener {
         list.setModel(data);
         divvySelectionModel = list.getSelectionModel();
         list.addListSelectionListener(this);
+    }
+
+    /**
+     * should only be called at the beginning of the application
+     * @param storedDivvies
+     */
+    public void initialize(List<Divvy> storedDivvies){
+        for(Divvy div: storedDivvies){
+            addDivvy(div);
+        }
     }
 
     /**

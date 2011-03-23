@@ -62,8 +62,8 @@ public class DivvyPanel extends PaintedPanel implements ListCellRenderer{
         add(remainingLabel, "3,1");
     }
 
-    public void setAmountText(String amount) {
-        this.amountLabel.setText(amount);
+    public void setAmount(double amount) {
+        this.gauge.setMaximum((int)(amount*CENTS));
     }
 
     public void setNameText(String name) {
