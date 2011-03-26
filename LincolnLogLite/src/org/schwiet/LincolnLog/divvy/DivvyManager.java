@@ -48,14 +48,8 @@ public class DivvyManager implements ListSelectionListener {
         amountColumnEditor.setHorizontalAlignment(JTextField.RIGHT);
         ((AbstractDocument)amountColumnEditor.getDocument()).setDocumentFilter(new AmountColumnEditorFilter(amountColumnEditor));
         /*
-         * TODO: load from DB
+         * upon instantiation, load any divvies from the DB
          */
-//        Divvy groc = new Divvy("Groceries", 250.00, DivvyType.EXPENSE);
-//        addDivvy(groc);
-//        addDivvy(new Divvy("Restaraunts", 250.00, DivvyType.EXPENSE));
-//        addDivvy(new Divvy("Gas", 250.00, DivvyType.EXPENSE));
-//        addDivvy(new Divvy("Utilities", 250.00, DivvyType.EXPENSE));
-//        groc.addTransaction(Transaction.getInstance(groc, "test 1", "safeway", 32.00, System.currentTimeMillis()));
         Runnable loadingTask = new Runnable(){
 
             public void run() {

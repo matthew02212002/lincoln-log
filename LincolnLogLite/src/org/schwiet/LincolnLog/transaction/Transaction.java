@@ -5,20 +5,29 @@
 
 package org.schwiet.LincolnLog.transaction;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import org.schwiet.LincolnLog.divvy.Divvy;
 
 /**
- *
+ * A Transacion represesnts a money transaction, for practical sense, a receipt
  * @author sethschwiethale
  */
+@Entity
 public class Transaction {
+    private Long id;
     private double amount;
     private long date;
     private String payee;
     private String memo;
     private Divvy owner;
 
-    private Transaction(){}
+    public Transaction() {
+    }
 
     private Transaction(Divvy owner, String memo, String payee, double amount, long date){
         this.amount = amount;
@@ -26,6 +35,23 @@ public class Transaction {
         this.owner = owner;
         this.memo = memo;
         this.payee = payee;
+    }
+
+    /**
+     * returns the DB index for this {@link org.schwiet.LincolnLog.transaction.Transaction}
+     * @return
+     */
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    public Long getId() {
+        return id;
+    }
+    /**
+     * only for use by Hibernate, don't call this
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double getAmount() {
@@ -52,6 +78,8 @@ public class Transaction {
         this.memo = memo;
     }
 
+    @ManyToOne
+    @JoinColumn
     public Divvy getOwner() {
         return owner;
     }

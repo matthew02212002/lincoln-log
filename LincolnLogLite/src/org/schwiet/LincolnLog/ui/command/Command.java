@@ -13,11 +13,11 @@ public interface Command {
     /**
      * should perform appropriate method calls of implementing receiver class
      */
-    public void execute();
+    public void execute() throws Exception;
     /**
      * should do the opposite of whatever execute did
      */
-    public void undo();
+    public void undo() throws Exception;
     /**
      * return a short name for the command
      * @return

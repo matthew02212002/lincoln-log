@@ -6,6 +6,7 @@
 package org.schwiet.LincolnLog.transaction.commands;
 
 import org.schwiet.LincolnLog.divvy.Divvy;
+import org.schwiet.LincolnLog.persistence.PersistenceManager;
 import org.schwiet.LincolnLog.transaction.Transaction;
 import org.schwiet.LincolnLog.transaction.TransactionTableModel;
 import org.schwiet.LincolnLog.ui.command.Command;
@@ -30,12 +31,15 @@ public class MoveTransactionCommand extends TransactionCommand{
         this.newDivvy = to;
     }
 
-    public void execute() {
+    public void execute() throws Exception {
         if(this.originalDivvy != this.newDivvy){
             this.originalDivvy.removeTransaction(trans);
             this.newDivvy.addTransaction(trans);
             trans.setOwner(newDivvy);
+//          now that that worked, update ui
             updateTable();
+//          update transaction in Database
+            PersistenceManager.updateTransaction(trans);
         }
     }
 
