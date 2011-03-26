@@ -10,7 +10,7 @@ import org.schwiet.LincolnLog.transaction.TransactionTableModel;
 import org.schwiet.LincolnLog.ui.command.Command;
 
 /**
- *
+ * handles updating the Transaction table on the EDT
  * @author sethschwiethale
  */
 public abstract class TransactionCommand implements Command{

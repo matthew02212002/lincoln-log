@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.schwiet.LincolnLog.divvy.Divvy;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.persistence.UnitOfWork;
+import org.schwiet.LincolnLog.transaction.Transaction;
 
 /**
  * Used at the beginning of the application to load all the Divvies from the

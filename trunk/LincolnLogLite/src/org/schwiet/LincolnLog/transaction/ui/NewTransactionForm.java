@@ -53,6 +53,7 @@ public class NewTransactionForm extends PaintedPanel implements ListSelectionLis
     /*
      * non-accessible
      */
+
     private NewTransactionForm() {
         super();
         this.setLayout(new TableLayout(DIVS));
@@ -137,10 +138,10 @@ public class NewTransactionForm extends PaintedPanel implements ListSelectionLis
         if (e.getSource().equals(addButton)
                 || e.getSource().equals(payeeField)
                 || e.getSource().equals(amountField)) {
-            try{
-            Transaction toSave = Transaction.getInstance(divvyRef, "-", payeeField.getText(), convertAmount(), System.currentTimeMillis());
-            CommandDispatch.getInstance().performCommand(SaveTransactionCommand.createCommand(tableRef, toSave, divvyRef));
-            }catch(NumberFormatException ex){
+            try {
+                Transaction toSave = Transaction.getInstance(divvyRef, "-", payeeField.getText(), convertAmount(), System.currentTimeMillis());
+                CommandDispatch.getInstance().performCommand(SaveTransactionCommand.createCommand(tableRef, toSave, divvyRef));
+            } catch (NumberFormatException ex) {
                 logger.error("could not add transaction, amount field not formatted correctly");
             }
 

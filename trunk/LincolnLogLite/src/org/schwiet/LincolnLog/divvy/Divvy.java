@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.hibernate.Hibernate;
 import org.schwiet.LincolnLog.divvy.DivvyUtility.DivvyType;
 import org.schwiet.LincolnLog.transaction.Transaction;
 import org.schwiet.LincolnLog.ui.painters.GlassPainter;
@@ -177,8 +178,14 @@ public class Divvy {
         return Collections.unmodifiableSet(transactions);
     }
 
-    public void setTransactions(Set<Transaction> transactions){
-        this.transactions = transactions;
+    /**
+     * only to be called by Hibernate
+     * @param transactions
+     */
+    protected void setTransactions(Set<Transaction> transactions){
+        //TODO: seems sketchy, but I have to create a new HashSet from what is
+        //loaded to be able to modify it later
+        this.transactions = new HashSet<Transaction>(transactions);
     }
     /**
      * for use with ListUI

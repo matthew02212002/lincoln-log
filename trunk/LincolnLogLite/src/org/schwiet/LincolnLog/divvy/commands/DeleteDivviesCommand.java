@@ -7,6 +7,7 @@ package org.schwiet.LincolnLog.divvy.commands;
 
 import org.schwiet.LincolnLog.divvy.Divvy;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
+import org.schwiet.LincolnLog.persistence.PersistenceManager;
 import org.schwiet.LincolnLog.ui.command.Command;
 
 /**
@@ -26,12 +27,14 @@ public class DeleteDivviesCommand implements Command{
         this.divvies = divvies;
     }
 
-    public void execute() {
+    public void execute() throws Exception {
         for(Object div: divvies){
             if(div instanceof Divvy){
                 manager.removeDivvy((Divvy)div);
             }
         }
+//      persist changes
+        PersistenceManager.deleteDivvies(divvies);
     }
 
     public void undo() {

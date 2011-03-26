@@ -7,6 +7,7 @@ package org.schwiet.LincolnLog.ui.command;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
 /**
@@ -45,11 +46,18 @@ public class CommandDispatch {
      */
     public synchronized void performCommand(final Command command) {
         runQueue.submit(new Runnable() {
+
             public void run() {
-                command.execute();
+                try {
+                    command.execute();
+                } catch (Exception e) {
+                    logger.error(String.format("Command, %1$s failed - %2$s", command.getCommandName(), e));
+                    e.printStackTrace();
+                    return;
+                }
                 commands.push(command);
                 checksize();
-                logger.debug(command.getCommandName()+" - Undo Queue: "+commands.size());
+                logger.debug(command.getCommandName() + " - Undo Queue: " + commands.size());
             }
         });
     }
@@ -61,11 +69,18 @@ public class CommandDispatch {
     public synchronized void undo() {
         if (!commands.isEmpty()) {
             runQueue.submit(new Runnable() {
-            public void run() {
-                logger.debug("undoing: "+commands.peek().getCommandName());
-                commands.pop().undo();
-            }
-        });
+
+                public void run() {
+                    Command command = null;
+                    logger.debug("undoing: " + commands.peek().getCommandName());
+                    try {
+                        command = commands.pop();
+                        command.undo();
+                    } catch (Exception ex) {
+                        logger.error(String.format("undoing, %1$s failed - %2$s", command.getCommandName(), ex));
+                    }
+                }
+            });
         }
     }
 
@@ -74,7 +89,7 @@ public class CommandDispatch {
      * {@link org.schwiet.LincolnLog.ui.command.CommandDispatch} worker thread
      * @param runnable
      */
-    public void performRunnable(final Runnable runnable){
+    public void performRunnable(final Runnable runnable) {
         runQueue.execute(runnable);
     }
 
