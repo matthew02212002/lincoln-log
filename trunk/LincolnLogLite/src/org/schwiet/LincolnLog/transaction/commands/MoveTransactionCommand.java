@@ -43,11 +43,13 @@ public class MoveTransactionCommand extends TransactionCommand{
         }
     }
 
-    public void undo() {
+    public void undo() throws Exception {
         this.newDivvy.removeTransaction(trans);
         this.originalDivvy.addTransaction(trans);
         trans.setOwner(originalDivvy);
         updateTable();
+//      update transaction in Database
+        PersistenceManager.updateTransaction(trans);
     }
 
     public static Command createCommand(TransactionTableModel tm, Transaction trans, Divvy from, Divvy to){

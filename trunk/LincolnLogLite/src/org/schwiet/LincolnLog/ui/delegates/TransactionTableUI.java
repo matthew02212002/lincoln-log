@@ -47,7 +47,7 @@ public class TransactionTableUI extends BasicTableUI {
         protected static final Color SELECTION_ACTIVE_SELECTION_BACKGROUND_COLOR = new Color(0x3d80df);
         protected static final Color SELECTION_INACTIVE_SELECTION_FOREGROUND_COLOR = Color.BLACK;
         protected static final Color SELECTION_INACTIVE_SELECTION_BACKGROUND_COLOR = new Color(0xc0c0c0);
-        protected static final Color SELECTION_ACTIVE_BOTTOM_BORDER_COLOR = new Color(125, 170, 234);
+        protected static final Color SELECTION_ACTIVE_BOTTOM_BORDER_COLOR = new Color(102,255,153);//125, 170, 234);
         protected static final Color SELECTION_INACTIVE_BOTTOM_BORDER_COLOR = new Color(224, 224, 224);
         protected static final Color TRANSPARENT_COLOR = new Color(0, 0, 0, 0);
 

@@ -37,8 +37,11 @@ public class SaveDivvyCommand implements Command {
         PersistenceManager.saveDivvy(divvy);
     }
 
-    public void undo() {
+    public void undo() throws Exception {
+//      first remove divvy from ui
         manager.removeDivvy(divvy);
+//      persist change
+        PersistenceManager.deleteDivvy(divvy);
     }
 
     public static Command createCommand(DivvyManager manager, Divvy divvy) {

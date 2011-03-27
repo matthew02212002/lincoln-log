@@ -42,11 +42,13 @@ public class SaveTransactionCommand extends TransactionCommand {
         PersistenceManager.saveTransaction(trans);
     }
 
-    public void undo() {
+    public void undo() throws Exception {
         model.removeTransaction(trans);
         divvy.removeTransaction(trans);
         trans.setOwner(null);
         updateTable();
+//      save Transaction to DB
+        PersistenceManager.deleteTransaction(trans);
     }
 
     public static Command createCommand(JTable table, Transaction trans, Divvy divvy) {

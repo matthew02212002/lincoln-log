@@ -13,11 +13,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import org.schwiet.LincolnLog.ui.color.SelectedCellColors;
+import org.schwiet.LincolnLog.ui.color.UnselectedCellColors;
+import org.schwiet.LincolnLog.ui.painters.TableCellPainter;
+import org.schwiet.spill.painter.SchemePainter;
 
 /**
  * A collection of utility methods to be used with {@link JTable}.
  */
 public class TableUtils {
+
+    private static final SchemePainter<Component> CELL_PAINTER = new TableCellPainter(new UnselectedCellColors()),
+            SELECTED_PAINTER = new TableCellPainter(new SelectedCellColors());
 
     private TableUtils() {
         // no constructor - utility class.
@@ -64,7 +71,7 @@ public class TableUtils {
 
             JScrollPane scrollPane = (JScrollPane) table.getParent().getParent();
             scrollPane.setViewportBorder(
-                    new StripedViewportBorder(scrollPane.getViewport(), table, stipeColor));
+                    new TransactionTableViewportBorder(scrollPane.getViewport(), table, stipeColor));
             scrollPane.getViewport().setOpaque(false);
 
             scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER,
@@ -138,6 +145,21 @@ public class TableUtils {
         if (sortDelegate == null) {
             throw new IllegalArgumentException("The given SortDelegate cannot be null.");
         }
+    }
+    /**
+     * returns a {@link org.schwiet.spill.painter.Painter} to use for painting
+     * an unselected row
+     * @return
+     */
+    public static SchemePainter<Component> getTableCellPainter(){
+        return CELL_PAINTER;
+    }
+    /**
+     * returns a painter to use for painting a selected row
+     * @return
+     */
+    public static SchemePainter<Component> getSelectedCellPainter(){
+        return SELECTED_PAINTER;
     }
 
     private static class ColumnHeaderMouseListener extends MouseAdapter {

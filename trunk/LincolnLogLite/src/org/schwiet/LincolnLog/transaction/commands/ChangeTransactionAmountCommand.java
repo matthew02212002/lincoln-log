@@ -41,13 +41,15 @@ public class ChangeTransactionAmountCommand extends TransactionCommand{
         PersistenceManager.updateTransaction(trans);
     }
 
-    public void undo() {
+    public void undo() throws Exception {
         Divvy divvy = trans.getOwner();
         trans.setAmount(oldAmount);
         if(divvy != null){
             divvy.recalculate();
         }
         updateTable();
+//      persist change to Transaction
+        PersistenceManager.updateTransaction(trans);
     }
 
     public static Command createCommand(TransactionTableModel tm, Transaction trans, double newAmnt){
