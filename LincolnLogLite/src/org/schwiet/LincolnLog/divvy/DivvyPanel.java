@@ -71,7 +71,7 @@ public class DivvyPanel extends PaintedPanel implements ListCellRenderer{
     }
 
     public void setRemaining(double remaining) {
-        this.remainingLabel.setText("$"+remaining);
+        this.remainingLabel.setText(String.format("$%1$.0f", remaining));
         this.gauge.setValue((int)(remaining*CENTS));
         this.redraw();
     }

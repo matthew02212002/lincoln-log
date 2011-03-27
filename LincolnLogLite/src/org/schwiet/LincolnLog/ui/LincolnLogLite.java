@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.transitions.ScreenTransition;
@@ -25,12 +24,12 @@ import org.schwiet.LincolnLog.divvy.DivvyForm;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.divvy.DivvyUtility;
 import org.schwiet.LincolnLog.divvy.commands.DeleteDivviesCommand;
-import org.schwiet.LincolnLog.persistence.HibernateUtil;
 import org.schwiet.LincolnLog.transaction.ui.NewTransactionForm;
 import org.schwiet.LincolnLog.ui.command.CommandDispatch;
 import org.schwiet.LincolnLog.ui.components.BottomBarPanel;
 import org.schwiet.LincolnLog.ui.components.ComponentFactory;
 import org.schwiet.LincolnLog.ui.components.ConfirmationPanel;
+import org.schwiet.LincolnLog.ui.components.TransactionTable;
 import org.schwiet.LincolnLog.ui.delegates.TransactionTableUI;
 import org.schwiet.LincolnLog.ui.utils.LayoutUtility;
 import org.schwiet.LincolnLog.ui.utils.PlatformUtils;
@@ -158,6 +157,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         divvyList = new javax.swing.JList();
         transactionScrollPane = new javax.swing.JScrollPane();
         transactionTable = new javax.swing.JTable();
+        transactionTable = new TransactionTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -187,7 +187,8 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        transactionTable.setRowHeight(20);
+        transactionTable.setRowHeight(36);
+        transactionTable.setSelectionBackground(new java.awt.Color(102, 255, 153));
         transactionTable.setShowVerticalLines(false);
         transactionScrollPane.setViewportView(transactionTable);
 
@@ -264,6 +265,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
      */
 
     private void tweak() {
+
         addDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_16.png"));
         removeDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/remove_16.png"));
         bottomBar = ComponentFactory.getBottomBar();

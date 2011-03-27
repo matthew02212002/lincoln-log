@@ -325,7 +325,7 @@ public class TransactionTableModel extends AbstractTableModel {
         return getColumn(columnIndex).getType();
     }
 
-    private static TransactionColumn getColumn(int columnIndex) {
+    public static TransactionColumn getColumn(int columnIndex) {
         return TransactionColumn.values()[columnIndex];
     }
 
