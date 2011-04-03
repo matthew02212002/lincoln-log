@@ -25,8 +25,8 @@ public class LincolnProgressBarUI extends BasicProgressBarUI {
             barGradient;
     private static final float[] RATIOS = {.0f, .2f, .9f};
     private static final Color[] COLORS = {new Color(10, 10, 10, 130),new Color(10, 10, 10, 80), new Color(10, 10, 10, 10)};
-    private static final float[] BAR_RATIOS = {.0f, .4999f, .5f, 1.0f};
-    private static final Color[] BAR_COLORS = {new Color(203,220,214), new Color(143,189,162), new Color(102,255,163), new Color(176,222,194)};
+    private static final float[] BAR_RATIOS = {.0f, .1f, .5f, 1.0f};
+    private static final Color[] BAR_COLORS = {new Color(111, 147, 153), new Color(211, 247, 253), new Color(167, 183, 240), new Color(200, 235, 240)};
     private static final int INSET = 1;
 
     /**
@@ -85,13 +85,13 @@ public class LincolnProgressBarUI extends BasicProgressBarUI {
             /*
              * paint left to right
              */
-            g2.setPaint(new Color(107,215,174,(int)(40*progressBar.getPercentComplete())));
+            g2.setPaint(new Color(197,204,215,(int)(40*progressBar.getPercentComplete())));
             g2.fillRoundRect(INSET, INSET, amountFull,
-                    c.getHeight()-(2*INSET), 14, 14);
-            g2.setPaint(new Color(157,205,174,(int)(40*progressBar.getPercentComplete())));
+                    c.getHeight()-(2*INSET), 12, 12);
+            g2.setPaint(new Color(87,124,205,(int)(60*progressBar.getPercentComplete())));
             g2.fillRoundRect(INSET+1, INSET+1, amountFull-2,
                     c.getHeight()-(2*INSET)-2, 12, 12);
-            g2.setPaint(new Color(157,198,174, 80));
+            g2.setPaint(new Color(15,154,248, 80));
             g2.fillRoundRect(INSET+2, INSET+2, amountFull-4,
                     c.getHeight()-(2*INSET)-4, 10, 10);
             g2.setPaint(barGradient);//new Color(205,210,255,(int)(220*progressBar.getPercentComplete())));

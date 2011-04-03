@@ -5,6 +5,7 @@
 package org.schwiet.LincolnLog.transaction.ui;
 
 import info.clearthought.layout.TableLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -34,7 +35,7 @@ import org.schwiet.spill.plaf.IndentLabelUI;
 public class NewTransactionForm extends PaintedPanel implements ListSelectionListener,
         ActionListener {
 
-    private static final double[][] DIVS = {{8, 110, -1, 5, 12, 5, 75, 5, 15, 5, 75, 5, 24, 8}, {4, -1, 4}};
+    private static final double[][] DIVS = {{8, 24, 5, 110, -1, 5, 12, 5, 75, 5, 15, 5, 75,8}, {4, -1, 4}};
     /*
      * JLabels
      */
@@ -66,7 +67,7 @@ public class NewTransactionForm extends PaintedPanel implements ListSelectionLis
     }
 
     private void createComponents() {
-        addButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_Lite_16.png"));
+        addButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_16.png"));
         titleLabel = new JLabel("New Transaction");
         signLabel = new JLabel("$");
         payeeLabel = new JLabel("to");
@@ -75,16 +76,16 @@ public class NewTransactionForm extends PaintedPanel implements ListSelectionLis
         payeeLabel.setHorizontalAlignment(JLabel.CENTER);
         amountField.setHorizontalAlignment(JLabel.RIGHT);
         //
-        titleLabel.setUI(new IndentLabelUI());
-        signLabel.setUI(new IndentLabelUI());
-        payeeLabel.setUI(new IndentLabelUI());
+        titleLabel.setUI(new IndentLabelUI(new Color(30,30,30), Color.GRAY, Color.WHITE));
+        signLabel.setUI(new IndentLabelUI(new Color(30,30,30), Color.GRAY, Color.WHITE));
+        payeeLabel.setUI(new IndentLabelUI(new Color(30,30,30), Color.GRAY, Color.WHITE));
         //
-        this.add(titleLabel, "1,0,1,2");
-        this.add(signLabel, "4,0,4,2");
-        this.add(amountField, "6,1");
-        this.add(payeeLabel, "8,0,8,2");
-        this.add(payeeField, "10,1");
-        this.add(addButton, "12,0,12,2");
+        this.add(titleLabel, "3,0,3,2");
+        this.add(signLabel, "6,0,6,2");
+        this.add(amountField, "8,1");
+        this.add(payeeLabel, "10,0,10,2");
+        this.add(payeeField, "12,1");
+        this.add(addButton, "1,0,1,2");
         /*
          * blocks input other than digits and a dicimal in the right place on
          * amountField

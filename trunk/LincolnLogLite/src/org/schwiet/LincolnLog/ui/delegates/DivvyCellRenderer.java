@@ -36,7 +36,7 @@ public class DivvyCellRenderer extends JPanel implements TableCellRenderer{
         label.setUI(new IndentLabelUI(new Color(30,30,30), Color.GRAY, Color.WHITE));
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
-        label.setFont(DivvyUtility.getInstance().getNumberFont().deriveFont(14.0f));
+        label.setFont(label.getFont().deriveFont(12.0f));
         //layout
         this.setLayout(new TableLayout(DIVS));
         this.add(label, "1,1");

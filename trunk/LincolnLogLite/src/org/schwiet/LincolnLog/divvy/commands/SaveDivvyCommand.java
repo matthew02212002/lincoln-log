@@ -4,7 +4,6 @@
  */
 package org.schwiet.LincolnLog.divvy.commands;
 
-import org.hibernate.HibernateException;
 import org.schwiet.LincolnLog.divvy.Divvy;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.persistence.PersistenceManager;

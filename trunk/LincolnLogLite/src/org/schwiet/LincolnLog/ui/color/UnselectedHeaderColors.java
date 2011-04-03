@@ -12,13 +12,13 @@ import org.schwiet.spill.painter.colorScheme.BasicThemedColorScheme;
  *
  * @author sethschwiethale
  */
-public class UnselectedCellColors implements BasicThemedColorScheme{
+public class UnselectedHeaderColors implements BasicThemedColorScheme{
 
-    public static final Color ACT_LITE = new Color(247,248,252);
-    public static final Color ACT_DARK = new Color(206,192,216);
-    public static final Color ACT_MID = new Color(220,221,225);
+    public static final Color ACT_LITE = new Color(90,91,95);
+    public static final Color ACT_DARK = new Color(26,22,26);
+    public static final Color ACT_MID = new Color(70,71,75);
     public static final Color DSBLD_DARK = new Color(0x8f8f8f);
-    public static final Color DSBLD_LITE = new Color(0xe4e4e4);
+    public static final Color DSBLD_LITE = new Color(107,108,102);
     public static final Color DSBLD_MID = new Color(0xd1d1d1);
 
     

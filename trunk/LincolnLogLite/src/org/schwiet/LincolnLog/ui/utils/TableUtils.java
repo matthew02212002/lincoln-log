@@ -154,6 +154,14 @@ public class TableUtils {
     public static SchemePainter<Component> getTableCellPainter(){
         return CELL_PAINTER;
     }
+
+    /**
+     * tells the painter to not paint any divider
+     * @param paintRow
+     */
+    public static void setPaintRow(boolean paintRow){
+        ((TableCellPainter)CELL_PAINTER).setPaintDivider(paintRow);
+    }
     /**
      * returns a painter to use for painting a selected row
      * @return

@@ -13,7 +13,9 @@ import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.persistence.divvy.DeleteDivviesTransaction;
 import org.schwiet.LincolnLog.persistence.divvy.DeleteDivvyTransaction;
 import org.schwiet.LincolnLog.persistence.divvy.LoadDivviesTransaction;
+import org.schwiet.LincolnLog.persistence.divvy.SaveDivviesTransaction;
 import org.schwiet.LincolnLog.persistence.divvy.SaveDivvyTransaction;
+import org.schwiet.LincolnLog.persistence.divvy.UpdateDivvyTransaction;
 import org.schwiet.LincolnLog.persistence.transactions.DeleteTransTransaction;
 import org.schwiet.LincolnLog.persistence.transactions.SaveTransTransaction;
 import org.schwiet.LincolnLog.persistence.transactions.UpdateTransTransaction;
@@ -80,6 +82,23 @@ public class PersistenceManager {
      */
     public static void deleteDivvies(Object[] divvies) throws Exception{
         performUnitOfWork(DeleteDivviesTransaction.getUnitOfWork(divvies));
+    }
+    /**
+     * saves the given {@link org.schwiet.LincolnLog.divvy.Divvy} Array
+     * the embedded db
+     * @param divvy
+     * @throws HibernateException
+     */
+    public static void saveDivvies(Object[] divvies) throws Exception{
+        performUnitOfWork(SaveDivviesTransaction.getUnitOfWork(divvies));
+    }
+    /**
+     * persists any changes made to a {@link org.schwiet.LincolnLog.divvy.Divvy}
+     * @param divvy
+     * @throws Exception
+     */
+    public static void updateDivvy(Divvy divvy) throws Exception{
+        performUnitOfWork(UpdateDivvyTransaction.getUnitOfWork(divvy));
     }
     /**
      * loads all the {@link org.schwiet.LincolnLog.divvy.Divvy}s that are in

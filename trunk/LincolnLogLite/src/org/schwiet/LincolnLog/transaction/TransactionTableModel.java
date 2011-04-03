@@ -5,6 +5,7 @@
 package org.schwiet.LincolnLog.transaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
@@ -91,6 +92,38 @@ public class TransactionTableModel extends AbstractTableModel {
         }
 
     }
+
+    /**
+     * Adds a Set of Transactions from the Table Model, firing a notice only
+     * once
+     * Threadsafe
+     * @param transes
+     */
+    public void addTransactions(final Set<Transaction> transes) {
+        try {
+            Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    for (Transaction trans : transes) {
+                        transactions.addElement(trans);
+                    }
+                    fireTableDataChanged();
+                }
+            };
+
+            //make sure this is run off the EDT
+            if (SwingUtilities.isEventDispatchThread()) {
+                r.run();
+            } else {
+                SwingUtilities.invokeLater(r);
+            }
+        } catch (Exception e) {
+            logger.error("error adding AP record to table: " + e);
+            return;
+        }
+    }
+
     /**
      * remove MoneyTransaction, <code>trans</code> from the Table Model
      * @param trans
@@ -102,7 +135,6 @@ public class TransactionTableModel extends AbstractTableModel {
                 @Override
                 public void run() {
                     transactions.removeElement(trans);
-                    final int index = transactions.size() - 1;
                     fireTableDataChanged();
                 }
             };
@@ -118,6 +150,37 @@ public class TransactionTableModel extends AbstractTableModel {
             return;
         }
 
+    }
+
+    /**
+     * removes a Set of Transactions from the Table Model, firing a notice only
+     * once
+     * Threadsafe
+     * @param transes
+     */
+    public void removeTransactions(final Set<Transaction> transes) {
+        try {
+            Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    for (Transaction trans : transes) {
+                        transactions.removeElement(trans);
+                    }
+                    fireTableDataChanged();
+                }
+            };
+
+            //make sure this is run off the EDT
+            if (SwingUtilities.isEventDispatchThread()) {
+                r.run();
+            } else {
+                SwingUtilities.invokeLater(r);
+            }
+        } catch (Exception e) {
+            logger.error("error adding AP record to table: " + e);
+            return;
+        }
     }
 
     /**
@@ -207,16 +270,16 @@ public class TransactionTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         //TODO!!! USE COMMAND PATTERN
-        if (!SwingUtilities.isEventDispatchThread()||
-                rowIndex >= transactions.size()) {
-            logger.error("illegal call to setValueAt: row: "+rowIndex+", size: "+transactions.size());
+        if (!SwingUtilities.isEventDispatchThread()
+                || rowIndex >= transactions.size()) {
+            logger.error("illegal call to setValueAt: row: " + rowIndex + ", size: " + transactions.size());
             return;
         }
         boolean changed = false;
         switch (getColumn(columnIndex)) {
             case DIVVY:
-                if (aValue instanceof Divvy &&
-                        !aValue.equals(transactions.get(rowIndex).getOwner())) {
+                if (aValue instanceof Divvy
+                        && !aValue.equals(transactions.get(rowIndex).getOwner())) {
                     Transaction trans = transactions.get(rowIndex);
                     CommandDispatch.getInstance().performCommand(
                             MoveTransactionCommand.createCommand(this, trans, trans.getOwner(), (Divvy) aValue));
