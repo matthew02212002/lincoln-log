@@ -89,13 +89,19 @@ class TransactionTableViewportBorder extends AbstractBorder implements
 //                    : topY + fTable.getRowHeight();
             g2.translate(0, topY);
             if (fTable.isRowSelected(currentRow - 1)) {
-                TableUtils.getSelectedCellPainter().paint(g2, fViewport, clip.width, bottomY - topY);
+                TableUtils.getSelectedCellPainter().paint(g2, fViewport, fViewport.getWidth(), bottomY - topY);
                 TransactionTableUI ui = (TransactionTableUI) fTable.getUI();
                 Border border = ui.getSelectedRowBorder();
                 border.paintBorder(fViewport, g2, 0, 0, fViewport.getWidth(),
                         fTable.getRowHeight());
             }else{
-                TableUtils.getTableCellPainter().paint(g2, fViewport, clip.width, bottomY - topY);
+//                if(currentRow > fTable.getRowCount()){
+//                    TableUtils.setPaintRow(false);
+//                }
+//                else{
+//                    TableUtils.setPaintRow(true);
+//                }
+                TableUtils.getTableCellPainter().paint(g2, fViewport, fViewport.getWidth(), bottomY - topY);
             }
 
             g2.translate(0, -topY);

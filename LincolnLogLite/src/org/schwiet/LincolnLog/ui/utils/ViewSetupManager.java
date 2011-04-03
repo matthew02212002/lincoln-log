@@ -23,6 +23,7 @@ public interface ViewSetupManager {
     public enum View{
         WELCOME("Welcom Message"),
         NEW_DIVVY("Create a new Divvy"),
+        EDIT_DIVVY("Edit a Divvy"),
         TRANSACTION("Transaction Listing");
 
         private String title;

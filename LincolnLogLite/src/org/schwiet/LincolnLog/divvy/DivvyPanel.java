@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -20,6 +21,7 @@ import org.schwiet.LincolnLog.ui.delegates.LincolnProgressBarUI;
 import org.schwiet.LincolnLog.ui.painters.GlassPainter;
 import org.schwiet.spill.components.PaintedPanel;
 import org.schwiet.spill.plaf.IndentLabelUI;
+import org.schwiet.spill.plaf.IndentLabelUI.IndentDirection;
 
 /**
  *
@@ -55,15 +57,17 @@ public class DivvyPanel extends PaintedPanel implements ListCellRenderer{
     }
 
     private void installComponents() {
-        double[][] spaces = {{5, 100, 5, -1, 5}, {8, 20, 4, 15, 4}};
+        double[][] spaces = {{5, 100, 5, -1, 5}, {4, 16, 0, 15, 15, 4}};
         this.setLayout(new TableLayout(spaces));
         add(nameLabel, "1,1");
-        add(gauge, "1,3,3,3");
-        add(remainingLabel, "3,1");
+        add(gauge, "1,4,3,4");
+        add(remainingLabel, "3,1,3,3");
+        add(amountLabel, "1,3");
     }
 
     public void setAmount(double amount) {
         this.gauge.setMaximum((int)(amount*CENTS));
+        this.amountLabel.setText(String.format("$%1$.2f", amount));
     }
 
     public void setNameText(String name) {
@@ -80,17 +84,24 @@ public class DivvyPanel extends PaintedPanel implements ListCellRenderer{
      */
     private void createComponents(String name, double amountDollars, double amountLeft) {
         nameLabel = new JLabel(name);
-        nameLabel.setUI(new IndentLabelUI());
+        nameLabel.setUI(new IndentLabelUI(IndentDirection.UP));
         nameLabel.setVerticalAlignment(JLabel.BOTTOM);
         nameLabel.setFont(nameLabel.getFont().deriveFont(Font.PLAIN, 14.0f));
+
+        amountLabel = new JLabel();
+        amountLabel.setUI(new IndentLabelUI(IndentDirection.UP, new Color(120,120,120), Color.GRAY, Color.BLACK));
+        amountLabel.setVerticalAlignment(JLabel.BOTTOM);
+        amountLabel.setFont(DivvyUtility.getInstance().getThinFont().deriveFont(12.0f));
+
         remainingLabel = new JLabel("$"+amountLeft);
-        remainingLabel.setUI(new IndentLabelUI());
+        remainingLabel.setUI(new IndentLabelUI(IndentDirection.UP));
         remainingLabel.setHorizontalAlignment(JLabel.RIGHT);
-        remainingLabel.setVerticalAlignment(JLabel.BOTTOM);
+        remainingLabel.setVerticalAlignment(JLabel.CENTER);
         remainingLabel.setFont(DivvyUtility.getInstance().getNumberFont().deriveFont(16.0f));
         gauge = new JProgressBar();
         gauge.getModel().setRangeProperties((int)(amountLeft*CENTS), 1, 0, (int)(amountDollars*CENTS), false);
         gauge.setIndeterminate(false);
+        gauge.setBorder(BorderFactory.createEmptyBorder());
         gauge.setUI(new LincolnProgressBarUI());
     }
     /**

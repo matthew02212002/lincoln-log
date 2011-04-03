@@ -37,12 +37,14 @@ public class DeleteDivviesCommand implements Command{
         PersistenceManager.deleteDivvies(divvies);
     }
 
-    public void undo() {
+    public void undo() throws Exception {
         for(Object div: divvies){
             if(div instanceof Divvy){
                 manager.addDivvy((Divvy)div);
             }
         }
+        //      persist changes
+        PersistenceManager.saveDivvies(divvies);
     }
 
     public static Command createCommand(DivvyManager manager, Object[] divvy){

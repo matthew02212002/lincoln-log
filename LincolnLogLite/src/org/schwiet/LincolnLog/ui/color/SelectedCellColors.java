@@ -14,9 +14,10 @@ import org.schwiet.spill.painter.colorScheme.BasicThemedColorScheme;
  */
 public class SelectedCellColors implements BasicThemedColorScheme{
 
-    public static final Color ACT_LITE = new Color(193,220,204);
+    public static final Color ACT_LITE = new Color(203,224,230);
+    public static final Color BGRND = new Color(233,244,250);
     public static final Color ACT_DARK = new Color(180,180,180);
-    public static final Color ACT_MID = new Color(146,192,164);
+    public static final Color ACT_MID = new Color(170,194,201);
     public static final Color DSBLD_DARK = new Color(0x8f8f8f);
     public static final Color DSBLD_LITE = new Color(0xe4e4e4);
     public static final Color DSBLD_MID = new Color(0xd1d1d1);
@@ -48,7 +49,7 @@ public class SelectedCellColors implements BasicThemedColorScheme{
     }
 
     public Color getBackground() {
-        return Color.WHITE;
+        return BGRND;
     }
 
     public Color getForeground() {

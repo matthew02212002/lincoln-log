@@ -4,6 +4,7 @@
  */
 package org.schwiet.LincolnLog.divvy;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
@@ -12,9 +13,12 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.AbstractDocument;
 import org.apache.log4j.Logger;
 import org.schwiet.LincolnLog.persistence.PersistenceManager;
@@ -33,24 +37,27 @@ public class DivvyManager implements ListSelectionListener {
     private static final DivvyManager INSTANCE = new DivvyManager();
     private TransactionTableModel transactionModel = new TransactionTableModel();
     private ListSelectionModel divvySelectionModel;
+    private TableRowSorter<TableModel> sorter;
+    private List<RowFilter<Object, Object>> selectionFilters = new LinkedList<RowFilter<Object, Object>>();
     /*
      * transaction table cell renderers
      */
     private JComboBox divvyColumnEditor = new JComboBox();
     private JTextField amountColumnEditor = new JTextField();
-
     private static final Logger logger = Logger.getLogger(DivvyManager.class);
     /*
      * unmodifiable
      */
 
     private DivvyManager() {
+        //row sorter used on table
+        sorter = new TableRowSorter<TableModel>(transactionModel);
         amountColumnEditor.setHorizontalAlignment(JTextField.RIGHT);
-        ((AbstractDocument)amountColumnEditor.getDocument()).setDocumentFilter(new AmountColumnEditorFilter(amountColumnEditor));
+        ((AbstractDocument) amountColumnEditor.getDocument()).setDocumentFilter(new AmountColumnEditorFilter(amountColumnEditor));
         /*
          * upon instantiation, load any divvies from the DB
          */
-        Runnable loadingTask = new Runnable(){
+        Runnable loadingTask = new Runnable() {
 
             public void run() {
                 try {
@@ -59,7 +66,6 @@ public class DivvyManager implements ListSelectionListener {
                     logger.error("could not load the Divvies");
                 }
             }
-
         };
         //run the loading on CommandDispatch's worker thread
         CommandDispatch.getInstance().performRunnable(loadingTask);
@@ -83,8 +89,8 @@ public class DivvyManager implements ListSelectionListener {
      * should only be called at the beginning of the application
      * @param storedDivvies
      */
-    public void initialize(List<Divvy> storedDivvies){
-        for(Divvy div: storedDivvies){
+    public void initialize(List<Divvy> storedDivvies) {
+        for (Divvy div : storedDivvies) {
             addDivvy(div);
         }
     }
@@ -101,6 +107,7 @@ public class DivvyManager implements ListSelectionListener {
                 divvyColumnEditor.addItem(div);
             }
         });
+        transactionModel.addTransactions(div.getTransactions());
     }
 
     /**
@@ -115,7 +122,7 @@ public class DivvyManager implements ListSelectionListener {
                 divvyColumnEditor.removeItem(div);
             }
         });
-
+        transactionModel.removeTransactions(div.getTransactions());
     }
 
     /**
@@ -124,6 +131,7 @@ public class DivvyManager implements ListSelectionListener {
      */
     public void installTransactionTableModel(JTable table) {
         table.setModel(transactionModel);
+        table.setRowSorter(sorter);
         /*
          * add cell-editors
          */
@@ -157,15 +165,19 @@ public class DivvyManager implements ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()
                 && divvySelectionModel == ((JList) e.getSource()).getSelectionModel()) {
-            int a = e.getFirstIndex();
-            int b = e.getLastIndex();
-            transactionModel.clearAll();
-            for (int i = a; i <= b; i++) {
+            selectionFilters.clear();
+            for (int i = 0; i < data.size(); i++) {
                 if (divvySelectionModel.isSelectedIndex(i)) {
-                    for (Transaction t : ((Divvy) data.getElementAt(i)).getTransactions()) {
-                        transactionModel.addTransaction(t);
-                    }
+                    //Probably need to eventually 
+                    selectionFilters.add(RowFilter.regexFilter(((Divvy) data.getElementAt(i)).getName()));
                 }
+            }
+            //if there are any Divvies selected, make their names the transaction
+            //tablefilter
+            if (selectionFilters.size() > 0) {
+                sorter.setRowFilter(RowFilter.orFilter(selectionFilters));
+            } else {//setting to null is like removing filter
+                sorter.setRowFilter(null);
             }
         }
     }

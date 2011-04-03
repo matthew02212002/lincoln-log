@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.schwiet.LincolnLog.ui.painters;
+package org.schwiet.LincolnLog.ui.color;
 
 import java.awt.Color;
 import org.schwiet.spill.painter.colorScheme.BasicThemedColorScheme;

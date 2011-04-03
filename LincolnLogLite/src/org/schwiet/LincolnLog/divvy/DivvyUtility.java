@@ -36,7 +36,8 @@ public class DivvyUtility {
      * Font
      */
     private final String FONT_LOCATION = getClass().getResource("/resources/Futura.ttc").toExternalForm();
-    private Font numberFont;
+    private final String FONT2_LOCATION = getClass().getResource("/resources/Sansation_Regular.ttf").toExternalForm();
+    private Font numberFont, sensationFont;
     /*
      * single instance
      */
@@ -51,6 +52,7 @@ public class DivvyUtility {
     private DivvyUtility(){
         try {
             numberFont = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_LOCATION.substring(5)));
+            sensationFont = Font.createFont(Font.TRUETYPE_FONT, new File(FONT2_LOCATION.substring(5)));
         } catch (FontFormatException ex) {
             logger.error("Bad Font format: "+FONT_LOCATION);
         } catch (IOException ex) {
@@ -106,6 +108,10 @@ public class DivvyUtility {
     public Font getNumberFont() {
         return numberFont;
     }
+
+    public Font getThinFont(){
+        return sensationFont;
+    }
     
     /**
      * get the only instance of DivvyUtility
@@ -117,7 +123,7 @@ public class DivvyUtility {
 
     public enum DivvyType{
         EXPENSE("Expense"),
-        BIN("Bin");
+        BIN("Allowance");
 
         private String name;
 
@@ -127,6 +133,11 @@ public class DivvyUtility {
 
         public String getName() {
             return name;
+        }
+
+        @Override
+        public String toString(){
+            return getName();
         }
         
     }

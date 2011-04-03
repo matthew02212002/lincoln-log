@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.transitions.ScreenTransition;
 import org.jdesktop.animation.transitions.TransitionTarget;
+import org.schwiet.LincolnLog.divvy.Divvy;
 import org.schwiet.LincolnLog.divvy.DivvyForm;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.divvy.DivvyUtility;
@@ -54,7 +55,8 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
      * JButtons
      */
     JButton addDivvyButton,
-            removeDivvyButton;
+            removeDivvyButton,
+            editDivvyButton;
     /*
      * Animations
      */
@@ -268,6 +270,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
 
         addDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_16.png"));
         removeDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/remove_16.png"));
+        editDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/edit_16.png"));
         bottomBar = ComponentFactory.getBottomBar();
         headerBar = ComponentFactory.getDarkGlassHeader();
         viewPanel = ComponentFactory.getAttentionPanel();
@@ -294,6 +297,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
          */
         bottomBar.add(removeDivvyButton, BottomBarPanel.REMOVE_BUTTON);
         bottomBar.add(addDivvyButton, BottomBarPanel.ADD_BUTTON);
+        bottomBar.add(editDivvyButton, BottomBarPanel.EDIT_BUTTON);
         /*
          *
          */
@@ -334,6 +338,14 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
                 addDivvyActionPerformed(evt);
             }
         });
+        //edit the first selected Divvy
+        editDivvyButton.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editDivvyActionPerformed(evt);
+            }
+        });
+        //remore a divvy
         removeDivvyButton.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -350,6 +362,10 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
 
     private void addDivvyActionPerformed(ActionEvent evt) {
         handleViewRequest(View.NEW_DIVVY);
+    }
+
+    private void editDivvyActionPerformed(ActionEvent evt){
+        handleViewRequest(View.EDIT_DIVVY);
     }
     /*
      * divvyButtonAction
@@ -368,6 +384,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
 
     public void setupNewDivvyView() {
         viewPanel.removeAll();
+        viewPanel.setLayout(LayoutUtility.getViewLayout());
         viewPanel.add(DivvyForm.getInstance(), LayoutUtility.VIEW_CONTENT);
         viewPanel.add(this.confirmPanel, LayoutUtility.VIEW_CONFIRMATION);
         divvyList.setEnabled(false);
@@ -379,13 +396,30 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
 
     public void setupWelcomeView() {
         viewPanel.removeAll();
+        viewPanel.setLayout(LayoutUtility.getViewLayout());
         divvyList.setEnabled(true);
+    }
+    /*
+     * View = EDIT_DIVVY
+     */
+    public void setupEditDivvyView(){
+        Divvy divvy = (Divvy)divvyList.getSelectedValue();
+        //if there are no selected divvies, do nothing
+        if(divvy == null){
+            return;
+        }
+        viewPanel.removeAll();
+        viewPanel.setLayout(LayoutUtility.getViewLayout());
+        viewPanel.add(DivvyForm.getInstance(), LayoutUtility.VIEW_CONTENT);
+        divvyList.setEnabled(false);
+        DivvyForm.getInstance().loadForm(divvy);
     }
 
     public void setupTransactionView() {
         viewPanel.removeAll();
-        viewPanel.add(transactionScrollPane, LayoutUtility.VIEW_TABLE);
-        viewPanel.add(newTransPanel, LayoutUtility.VIEW_CONFIRMATION);
+        viewPanel.setLayout(LayoutUtility.getTransactionLayout());
+        viewPanel.add(transactionScrollPane, LayoutUtility.VIEW_TABLE_LOC);
+        viewPanel.add(newTransPanel, LayoutUtility.VIEW_NEW_TRANS);
         divvyList.setEnabled(true);
     }
     /*
@@ -402,6 +436,9 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
                 break;
             case TRANSACTION:
                 setupTransactionView();
+                break;
+            case EDIT_DIVVY:
+                setupEditDivvyView();
                 break;
             default:
                 break;
@@ -433,6 +470,12 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
                 break;
             case NEW_DIVVY:
                 if (requestedView != View.NEW_DIVVY) {
+                    view = requestedView;
+                    changed = true;
+                }
+                break;
+            case EDIT_DIVVY:
+                if(requestedView != View.EDIT_DIVVY){
                     view = requestedView;
                     changed = true;
                 }
