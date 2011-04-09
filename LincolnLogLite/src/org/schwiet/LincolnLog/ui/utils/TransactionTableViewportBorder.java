@@ -6,8 +6,10 @@ package org.schwiet.LincolnLog.ui.utils;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.LinearGradientPaint;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
@@ -21,11 +23,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
-import org.schwiet.LincolnLog.ui.color.SelectedCellColors;
-import org.schwiet.LincolnLog.ui.color.UnselectedCellColors;
 import org.schwiet.LincolnLog.ui.delegates.TransactionTableUI;
-import org.schwiet.spill.painter.SchemePainter;
-import org.schwiet.spill.painter.colorScheme.ColorScheme;
 
 /**
  * Creates a border for a {@link JViewport} that draws a striped background
@@ -45,6 +43,13 @@ class TransactionTableViewportBorder extends AbstractBorder implements
     //convenience field
     private int rowHeight;
 
+    private LinearGradientPaint left_shadow = new LinearGradientPaint(0, 0, 6, 0, new float[]{0.0f, .2f, .75f,1.0f},
+            new Color[]{new Color(45,45,45, 170),
+            new Color(100,100,100, 130),
+            new Color(100,100,100, 50),
+            new Color(230,230,230,230)});
+
+    private GradientPaint top_shadow;
 
     TransactionTableViewportBorder(JViewport viewport, JTable table, Color stripeColor) {
         fViewport = viewport;
@@ -54,6 +59,7 @@ class TransactionTableViewportBorder extends AbstractBorder implements
         fTable.addPropertyChangeListener(this);
         headerHeight = (int)fTable.getTableHeader().getPreferredSize().getHeight();
         rowHeight =fTable.getRowHeight();
+        top_shadow = new GradientPaint(0, headerHeight-1, new Color(20,20,20, 200), 0, headerHeight+3, new Color(100,100,100,0));
     }
 
     @Override
@@ -108,6 +114,13 @@ class TransactionTableViewportBorder extends AbstractBorder implements
             topY = bottomY;
             currentRow++;
         }
+        //
+        g2.setPaint(left_shadow);
+        g2.fillRect(0, 0, 6, clip.y+clip.height);
+        //
+//        g2.setPaint(top_shadow);
+//        g2.fillRect(0, headerHeight-1, clip.x+clip.width, 4);
+        //
         g2.dispose();
     }
 

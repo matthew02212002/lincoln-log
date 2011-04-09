@@ -16,7 +16,7 @@ import org.schwiet.spill.components.PaintedPanel;
  * @author sethschwiethale
  */
 public class ConfirmationPanel extends PaintedPanel{
-    private static final double[][] DIVS = {{8, 24, -1, 24, 8, 24, 8},{-1}};
+    private static final double[][] DIVS = {{-1, 8, 24, 8, 24, 8},{-1}};
     private JButton confirmButton,
                     cancelButton,
                     moreButton;
@@ -34,9 +34,30 @@ public class ConfirmationPanel extends PaintedPanel{
         /*
          * add buttons
          */
-        add(confirmButton, "5,0");
-        add(cancelButton, "1,0");
-        add(moreButton, "3,0");
+        add(cancelButton, "2,0");
+        add(moreButton, "4,0");
+    }
+
+    /**
+     * sets up the component such that it contains the back button and an add
+     * or more button that should apply some values and the reset, not leaving
+     * the current view
+     */
+    public void setUpAddView(){
+        this.removeAll();
+        this.add(cancelButton, "2,0");
+        this.add(moreButton, "4,0");
+        this.revalidate();
+    }
+    /**
+     * sets up the component such that it contains the back button and the apply
+     * or confirmation button
+     */
+    public void setUpChangeView(){
+        this.removeAll();
+        this.add(cancelButton, "2,0");
+        this.add(confirmButton, "4,0");
+        this.revalidate();
     }
 
     public void addConfirmListener(ActionListener l){

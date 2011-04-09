@@ -29,6 +29,12 @@ public class TransFormPainter implements Painter<Component> {
 
     private static final Color RAD_CENTER = new Color(211, 247, 253 ,150);
     private static final Color RAD_OUTER = new Color(255,255,255,0);
+
+    private LinearGradientPaint left_shadow = new LinearGradientPaint(0, 0, 6, 0, new float[]{0.0f, .2f, .75f,1.0f},
+            new Color[]{new Color(45,45,45, 170),
+            new Color(100,100,100, 130),
+            new Color(100,100,100, 50),
+            new Color(230,230,230,230)});
     /*
      *
      */
@@ -77,5 +83,8 @@ public class TransFormPainter implements Painter<Component> {
 
         graphics.setPaint(circle);
         graphics.fillRect(0, 0, 210, height);
+
+        graphics.setPaint(left_shadow);
+        graphics.fillRect(0, 0, 6, height-2);
     }
 }

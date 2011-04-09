@@ -53,6 +53,12 @@ public class DivvyForm extends JPanel{
      * @return
      */
     public boolean updateDivvy(Divvy div){
+        //null being passed here would mean there was no Divvy Selected in
+        //the Divvy List
+        if(div == null){
+            logger.error("error updating divvy, no selection...");
+            return false;
+        }
         try{
             CommandDispatch.getInstance().performCommand(ChangeDivvyValsCommand.createCommand(div,
                     nameField.getText(),

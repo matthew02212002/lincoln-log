@@ -45,6 +45,9 @@ public class DivvyManager implements ListSelectionListener {
     private JComboBox divvyColumnEditor = new JComboBox();
     private JTextField amountColumnEditor = new JTextField();
     private static final Logger logger = Logger.getLogger(DivvyManager.class);
+    //
+    private double selectedDivvyTotal = 0;
+    private double selectedDivvySpent = 0;
     /*
      * unmodifiable
      */
@@ -137,6 +140,13 @@ public class DivvyManager implements ListSelectionListener {
          */
         table.getColumn(TransactionColumn.DIVVY.getName()).setCellEditor(new DefaultCellEditor(divvyColumnEditor));
         table.getColumn(TransactionColumn.AMOUNT.getName()).setCellEditor(new DefaultCellEditor(amountColumnEditor));
+        /*
+         * set preferred widths
+         */
+        table.getColumn(TransactionColumn.PAYEE.getName()).setPreferredWidth(100);
+        table.getColumn(TransactionColumn.MEMO.getName()).setPreferredWidth(150);
+        table.getColumn(TransactionColumn.DIVVY.getName()).setPreferredWidth(100);
+        table.getColumn(TransactionColumn.AMOUNT.getName()).setPreferredWidth(90);
     }
 
     /**
@@ -166,12 +176,16 @@ public class DivvyManager implements ListSelectionListener {
         if (!e.getValueIsAdjusting()
                 && divvySelectionModel == ((JList) e.getSource()).getSelectionModel()) {
             selectionFilters.clear();
+            double a =  0, b = 0;
             for (int i = 0; i < data.size(); i++) {
                 if (divvySelectionModel.isSelectedIndex(i)) {
                     //Probably need to eventually 
                     selectionFilters.add(RowFilter.regexFilter(((Divvy) data.getElementAt(i)).getName()));
+                    a+= ((Divvy)data.getElementAt(i)).getAmount();
+                    b+= ((Divvy)data.getElementAt(i)).getRemainingAmount();
                 }
             }
+            System.err.println(String.format("Available: $%1$.2f, Remaining: $%2$.2f, Spent: $%3$.2f", a, b, (a-b)));
             //if there are any Divvies selected, make their names the transaction
             //tablefilter
             if (selectionFilters.size() > 0) {

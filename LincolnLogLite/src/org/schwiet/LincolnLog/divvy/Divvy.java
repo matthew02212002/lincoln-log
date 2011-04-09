@@ -13,9 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import org.hibernate.Hibernate;
 import org.schwiet.LincolnLog.divvy.DivvyUtility.DivvyType;
 import org.schwiet.LincolnLog.transaction.Transaction;
 import org.schwiet.LincolnLog.ui.painters.GlassPainter;
@@ -39,11 +39,11 @@ public class Divvy {
     private double amount;
     private DivvyType type;
     private Set<Transaction> transactions = new HashSet<Transaction>();
-
     /*
      * non-persistent
      */
-    DivvyPanel panel;
+    private DivvyPanel panel;
+    private double remainingAmount;
     /**
      * for Hibernate
      */
@@ -93,6 +93,16 @@ public class Divvy {
         this.amount = amount;
         panel.setAmount(amount);
         recalculate();
+    }
+    /**
+     * returns the amount determined to be remaining by this {@link Divvy}'s
+     * internal calculations, taking into account all transactions associated
+     * with it. this attribute does not need to be persisted
+     * @return
+     */
+    @Transient
+    public double getRemainingAmount(){
+        return remainingAmount;
     }
     /**
      * returns the {@link DivvyType} of this {@link Divvy} determining some of
@@ -215,6 +225,7 @@ public class Divvy {
             left -= trans.getAmount();
         }
         final double remaining = left;
+        this.remainingAmount = left;
         SwingUtilities.invokeLater(new Runnable(){
 
             public void run() {

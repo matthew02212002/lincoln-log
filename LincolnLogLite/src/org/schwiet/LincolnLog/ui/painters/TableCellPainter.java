@@ -28,6 +28,11 @@ public class TableCellPainter implements SchemePainter<Component> {
      */
     private static final float[] RATIOS = {0.0f, .5f, 1.0f};
     /*
+     *
+     */
+    private static final int MARGIN = 6;
+
+    /*
      * 
      */
     private LinearGradientPaint bg;
@@ -63,14 +68,14 @@ public class TableCellPainter implements SchemePainter<Component> {
         }
 
         g2.setPaint(bg);
-        g2.fillRect(0, 0, width, height);
+        g2.fillRect(0, 1, width, height-1);
 
         if (paintDivider) {
             g2.setColor(scheme.getActiveDark());
-            g2.drawLine(0, height - 1, width, height - 1);
+            g2.drawLine(MARGIN, height - 1, width, height - 1);
 
             g2.setColor(scheme.getBackground());
-            g2.drawLine(0, 0, width, 0);
+            g2.drawLine(MARGIN, 0, width-MARGIN, 0);
         }
     }
 

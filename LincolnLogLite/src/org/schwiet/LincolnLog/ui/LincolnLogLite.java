@@ -60,7 +60,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
     /*
      * Animations
      */
-    private View view = View.WELCOME;
+    private View view = View.TRANSACTION;
     private Animator viewAnimator = new Animator(600);
     private ScreenTransition transition;
     /*
@@ -102,8 +102,8 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
 
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             switch (view) {
-                case NEW_DIVVY:
-                    if (DivvyForm.getInstance().generateDivvy()) {
+                case EDIT_DIVVY:
+                    if (DivvyForm.getInstance().updateDivvy((Divvy)divvyList.getSelectedValue())) {
                         handleViewRequest(View.TRANSACTION);
                     }
                     break;
@@ -120,6 +120,9 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             switch (view) {
                 case NEW_DIVVY:
+                    handleViewRequest(View.TRANSACTION);
+                    break;
+                case EDIT_DIVVY:
                     handleViewRequest(View.TRANSACTION);
                     break;
                 default:
@@ -200,17 +203,17 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
             appAreaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(appAreaPanelLayout.createSequentialGroup()
                 .add(divvyScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 87, Short.MAX_VALUE)
                 .add(transactionScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         appAreaPanelLayout.setVerticalGroup(
             appAreaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(divvyScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+            .add(divvyScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
             .add(appAreaPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(transactionScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -386,6 +389,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         viewPanel.removeAll();
         viewPanel.setLayout(LayoutUtility.getViewLayout());
         viewPanel.add(DivvyForm.getInstance(), LayoutUtility.VIEW_CONTENT);
+        ((ConfirmationPanel)confirmPanel).setUpAddView();
         viewPanel.add(this.confirmPanel, LayoutUtility.VIEW_CONFIRMATION);
         divvyList.setEnabled(false);
         DivvyForm.getInstance().refreshForm();
@@ -411,6 +415,8 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         viewPanel.removeAll();
         viewPanel.setLayout(LayoutUtility.getViewLayout());
         viewPanel.add(DivvyForm.getInstance(), LayoutUtility.VIEW_CONTENT);
+        ((ConfirmationPanel)confirmPanel).setUpChangeView();
+        viewPanel.add(this.confirmPanel, LayoutUtility.VIEW_CONFIRMATION);
         divvyList.setEnabled(false);
         DivvyForm.getInstance().loadForm(divvy);
     }
