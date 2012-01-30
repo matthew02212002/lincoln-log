@@ -59,7 +59,7 @@ class TransactionTableViewportBorder extends AbstractBorder implements
         fTable.addPropertyChangeListener(this);
         headerHeight = (int)fTable.getTableHeader().getPreferredSize().getHeight();
         rowHeight =fTable.getRowHeight();
-        top_shadow = new GradientPaint(0, headerHeight-1, new Color(20,20,20, 200), 0, headerHeight+3, new Color(100,100,100,0));
+        top_shadow = new GradientPaint(0, headerHeight-1, new Color(0,0,0, 200), 0, headerHeight+3, new Color(0,0,0,0));
     }
 
     @Override
@@ -118,8 +118,8 @@ class TransactionTableViewportBorder extends AbstractBorder implements
         g2.setPaint(left_shadow);
         g2.fillRect(0, 0, 6, clip.y+clip.height);
         //
-//        g2.setPaint(top_shadow);
-//        g2.fillRect(0, headerHeight-1, clip.x+clip.width, 4);
+        g2.setPaint(top_shadow);
+        g2.fillRect(0, headerHeight-1, clip.x+clip.width, 4);
         //
         g2.dispose();
     }

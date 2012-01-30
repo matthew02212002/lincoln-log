@@ -23,6 +23,7 @@ import org.jdesktop.animation.transitions.TransitionTarget;
 import org.schwiet.LincolnLog.divvy.Divvy;
 import org.schwiet.LincolnLog.divvy.DivvyForm;
 import org.schwiet.LincolnLog.divvy.DivvyManager;
+import org.schwiet.LincolnLog.divvy.DivvySummary;
 import org.schwiet.LincolnLog.divvy.DivvyUtility;
 import org.schwiet.LincolnLog.divvy.commands.DeleteDivviesCommand;
 import org.schwiet.LincolnLog.transaction.ui.NewTransactionForm;
@@ -30,6 +31,8 @@ import org.schwiet.LincolnLog.ui.command.CommandDispatch;
 import org.schwiet.LincolnLog.ui.components.BottomBarPanel;
 import org.schwiet.LincolnLog.ui.components.ComponentFactory;
 import org.schwiet.LincolnLog.ui.components.ConfirmationPanel;
+import org.schwiet.LincolnLog.ui.components.summary.SummaryDisplay;
+import org.schwiet.LincolnLog.ui.components.summary.SummaryView;
 import org.schwiet.LincolnLog.ui.components.TransactionTable;
 import org.schwiet.LincolnLog.ui.delegates.TransactionTableUI;
 import org.schwiet.LincolnLog.ui.utils.LayoutUtility;
@@ -63,6 +66,8 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
     private View view = View.TRANSACTION;
     private Animator viewAnimator = new Animator(600);
     private ScreenTransition transition;
+
+    private static SummaryDisplay summary = null;
     /*
      *
      */
@@ -277,6 +282,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         bottomBar = ComponentFactory.getBottomBar();
         headerBar = ComponentFactory.getDarkGlassHeader();
         viewPanel = ComponentFactory.getAttentionPanel();
+        summary = SummaryDisplay.Initialize(headerBar);
         /*
          * main panel
          */
@@ -427,6 +433,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         viewPanel.add(transactionScrollPane, LayoutUtility.VIEW_TABLE_LOC);
         viewPanel.add(newTransPanel, LayoutUtility.VIEW_NEW_TRANS);
         divvyList.setEnabled(true);
+        summary.submitView(DivvySummary.getInstance());
     }
     /*
      * implementation of TransitionTarget
@@ -499,6 +506,14 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         if (changed) {
             transition.start();
         }
+    }
+
+    /**
+     * other classes can submit a {@link SummaryView} to display via this method
+     * @param view
+     */
+    public static void submitSummaryView(SummaryView view){
+        summary.submitView(view);
     }
 
     private void platformCheck() {
