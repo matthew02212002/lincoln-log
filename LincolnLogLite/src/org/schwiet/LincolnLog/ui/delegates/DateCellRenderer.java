@@ -27,7 +27,18 @@ public class DateCellRenderer extends JPanel implements TableCellRenderer {
     //for displaying date
     private DateFormat dateFormat;
 
+    private final static Color LITE = Color.WHITE,
+            DARK = new Color(30,30,30);
+
+    private IndentLabelUI ui = new IndentLabelUI(DARK, Color.GRAY, LITE);
+
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if(isSelected){
+            ui.setLook(IndentLabelUI.IndentDirection.DOWN, DARK, LITE);
+        }
+        else{
+            ui.setLook(IndentLabelUI.IndentDirection.UP, LITE, DARK);
+        }
         label.setText(dateFormat.format(new Date((Long)value)));
         return this;
     }
@@ -35,7 +46,7 @@ public class DateCellRenderer extends JPanel implements TableCellRenderer {
     public DateCellRenderer() {
         this.setOpaque(false);
 
-        label.setUI(new IndentLabelUI(new Color(30, 30, 30), Color.GRAY, Color.WHITE));
+        label.setUI(ui);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
         label.setFont(DivvyUtility.getInstance().getNumberFont().deriveFont(12.0f));

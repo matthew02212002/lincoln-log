@@ -35,8 +35,8 @@ public class DivvyUtility {
     /*
      * Font
      */
-    private final String FONT_LOCATION = "resources/Futura.ttc";
-    private final String FONT2_LOCATION = "resources/Sansation_Regular.ttf";
+    private final String FONT_LOCATION = "font/Futura.ttc";
+    private final String FONT2_LOCATION = "font/Sansation_Regular.ttf";
     private Font numberFont, sensationFont;
     /*
      * single instance
