@@ -14,7 +14,7 @@ import org.schwiet.spill.painter.Painter;
  * @author sethschwiethale
  */
 public class BottomBarPanel extends PaintedPanel{
-    private static final double[][] DIVS = {{12,24,6,24,110,24,-1},{-1}};
+    private static final double[][] DIVS = {{12, 24, 6, 24, 6, 24, 80, 24, -1},{-1}};
     private static final TableLayout LAYOUT = new TableLayout(DIVS);
     /*
      *
@@ -22,6 +22,7 @@ public class BottomBarPanel extends PaintedPanel{
     public static final String ADD_BUTTON = "3,0";
     public static final String REMOVE_BUTTON = "1,0";
     public static final String EDIT_BUTTON = "5,0";
+    public static final String REFRESH_BUTTON = "7,0";
 
     public BottomBarPanel(Painter painter){
         super(painter);

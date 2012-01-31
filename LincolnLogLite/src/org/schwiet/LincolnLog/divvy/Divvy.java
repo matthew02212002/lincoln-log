@@ -36,7 +36,9 @@ import org.schwiet.LincolnLog.ui.painters.GlassPainter;
 public class Divvy {
     private Long id;
     private String name;
-    private double amount;
+    private double 
+            amount,
+            recharge;
     private DivvyType type;
     private Set<Transaction> transactions = new HashSet<Transaction>();
     /*
@@ -57,8 +59,10 @@ public class Divvy {
     public Divvy(String name, double amount, DivvyType type){
         this.name = name;
         this.amount = amount;
+        // unless otherwise specified, recharge = amount at creation
+        this.recharge = amount;
         this.type = type;
-        panel = DivvyUtility.getDivvyCellRenderer(name, amount, amount);
+        panel = DivvyUtility.getDivvyCellRenderer(name, recharge, amount);
     }
     /**
      * returns the DB index for this {@link Divvy}
@@ -91,8 +95,26 @@ public class Divvy {
      */
     public void setAmount(double amount) {
         this.amount = amount;
-        panel.setAmount(amount);
+//        panel.setAmount(amount);
         recalculate();
+    }
+
+    /**
+     * returns the recharge; the amount to be added to {@link #amount} on resetting
+     * this {@link Divvy} in the case {@link #type} = {@link DivvyType#BIN}
+     * @return
+     */
+    public double getRecharge(){
+        return recharge;
+    }
+    /**
+     * sets the amount used to add to the {@link #amount} when resetting in the
+     * case of {@link #type} = {@link DivvyType#BIN}
+     * @param recharge
+     */
+    public void setRecharge(double recharge){
+        this.recharge = recharge;
+        panel.setAmount(recharge);
     }
     /**
      * returns the amount determined to be remaining by this {@link Divvy}'s
@@ -178,6 +200,29 @@ public class Divvy {
      */
     public void removeAllTransaction(){
         transactions.clear();
+    }
+    /**
+     * similar to {@link #removeAllTransaction()} except in the case that this 
+     * Divvy's {@link #type} == {@link DivvyType#BIN}, which will result in
+     * {@link #amount} = ({@link #remainingAmount} + {@link #recharge}) and 
+     * <i>then</i> all transactions removed
+     * NOTE: This method should be used in a transaction Command, so it may be 
+     * undone and reflected in persistence
+     */
+    public void reset(){
+        switch(type){
+            case BIN:
+                recalculate();
+                // carry over remaining amount
+                amount = remainingAmount + recharge;
+                break;
+            default:
+                // don't do anything special
+                break;
+        }
+        transactions.clear();
+        // finally refresh the remaining amount
+        recalculate();
     }
     /**
      * returns an immutable copy of this {@link Divvy}'s {@link Transactions}

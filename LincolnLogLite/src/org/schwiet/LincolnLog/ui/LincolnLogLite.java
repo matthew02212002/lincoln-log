@@ -26,6 +26,7 @@ import org.schwiet.LincolnLog.divvy.DivvyManager;
 import org.schwiet.LincolnLog.divvy.DivvySummary;
 import org.schwiet.LincolnLog.divvy.DivvyUtility;
 import org.schwiet.LincolnLog.divvy.commands.DeleteDivviesCommand;
+import org.schwiet.LincolnLog.divvy.commands.ResetDivviesCommand;
 import org.schwiet.LincolnLog.transaction.ui.NewTransactionForm;
 import org.schwiet.LincolnLog.ui.command.CommandDispatch;
 import org.schwiet.LincolnLog.ui.components.BottomBarPanel;
@@ -59,7 +60,8 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
      */
     JButton addDivvyButton,
             removeDivvyButton,
-            editDivvyButton;
+            editDivvyButton,
+            refreshButton;
     /*
      * Animations
      */
@@ -279,6 +281,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         addDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/add_16.png"));
         removeDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/remove_16.png"));
         editDivvyButton = ComponentFactory.getIconButton(getClass().getResource("/resources/edit_16.png"));
+        refreshButton = ComponentFactory.getIconButton(getClass().getResource("/resources/refresh_16.png"));
         bottomBar = ComponentFactory.getBottomBar();
         headerBar = ComponentFactory.getDarkGlassHeader();
         viewPanel = ComponentFactory.getAttentionPanel();
@@ -307,6 +310,7 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
         bottomBar.add(removeDivvyButton, BottomBarPanel.REMOVE_BUTTON);
         bottomBar.add(addDivvyButton, BottomBarPanel.ADD_BUTTON);
         bottomBar.add(editDivvyButton, BottomBarPanel.EDIT_BUTTON);
+        bottomBar.add(refreshButton, BottomBarPanel.REFRESH_BUTTON);
         /*
          *
          */
@@ -361,6 +365,13 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
                 removeDivvyActionPerformed(evt);
             }
         });
+        // refresh all
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                resetBudget(e);
+            }
+        });
         ((ConfirmationPanel) confirmPanel).addCancelListener(cancelAction);
         ((ConfirmationPanel) confirmPanel).addConfirmListener(confirmationAction);
         ((ConfirmationPanel) confirmPanel).addMoreListener(moreAction);
@@ -386,6 +397,9 @@ public class LincolnLogLite extends javax.swing.JFrame implements ViewSetupManag
             return;
         }
         CommandDispatch.getInstance().performCommand(DeleteDivviesCommand.createCommand(selection));
+    }
+    private void resetBudget(ActionEvent evt){
+        CommandDispatch.getInstance().performCommand(ResetDivviesCommand.createCommand());
     }
     /*
      * View = NEW_DIVVY

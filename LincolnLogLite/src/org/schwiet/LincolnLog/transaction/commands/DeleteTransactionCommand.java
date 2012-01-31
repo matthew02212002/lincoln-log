@@ -30,6 +30,7 @@ public class DeleteTransactionCommand implements Command{
         if(divvy != null){
             divvy.removeTransaction(trans);
         }
+        // TODO: need to remove from database also and from table model...
     }
 
     public void undo() {

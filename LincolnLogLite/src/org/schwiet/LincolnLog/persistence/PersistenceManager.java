@@ -16,6 +16,7 @@ import org.schwiet.LincolnLog.persistence.divvy.LoadDivviesTransaction;
 import org.schwiet.LincolnLog.persistence.divvy.SaveDivviesTransaction;
 import org.schwiet.LincolnLog.persistence.divvy.SaveDivvyTransaction;
 import org.schwiet.LincolnLog.persistence.divvy.UpdateDivvyTransaction;
+import org.schwiet.LincolnLog.persistence.transactions.DeleteAllTransTransaction;
 import org.schwiet.LincolnLog.persistence.transactions.DeleteTransTransaction;
 import org.schwiet.LincolnLog.persistence.transactions.SaveTransTransaction;
 import org.schwiet.LincolnLog.persistence.transactions.UpdateTransTransaction;
@@ -128,6 +129,14 @@ public class PersistenceManager {
      */
     public static void deleteTransaction(Transaction trans) throws Exception{
         performUnitOfWork(DeleteTransTransaction.getUnitOfWork(trans));
+    }
+
+    /**
+     * clears the Transaction Database table
+     * @throws Exception
+     */
+    public static void clearTransactions() throws Exception{
+        performUnitOfWork(DeleteAllTransTransaction.getUnitOfWork());
     }
 
     /**
