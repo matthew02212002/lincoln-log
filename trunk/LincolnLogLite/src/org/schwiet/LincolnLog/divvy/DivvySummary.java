@@ -39,7 +39,7 @@ public class DivvySummary implements SummaryView{
         container.setLayout(new TableLayout(divs));
         container.setOpaque(false);
         //add components
-        container.add(titleLabel, "0, 0");
+//        container.add(titleLabel, "0, 0");
 
         //set look
         titleLabel.setUI(new GlowLabelUI(new Color(187, 203, 255), Color.GRAY, new Color(15,154,248, 35)));

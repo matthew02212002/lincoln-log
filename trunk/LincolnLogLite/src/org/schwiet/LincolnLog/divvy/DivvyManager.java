@@ -129,6 +129,36 @@ public class DivvyManager implements ListSelectionListener {
     }
 
     /**
+     * returns an array containing all
+     * @return
+     */
+    public Divvy[] getAllDivvies(){
+        Divvy[] divs = new Divvy[data.size()];
+
+        // yet another reason why not to use the standard list model as the collection
+        for (int i = 0; i < data.size(); i++) {
+            divs[i] = ((Divvy) data.get(i));
+        }
+
+        return divs;
+    }
+
+    /**
+     * resets all {@link Divvy} instances and clears the {@link TransactionTableModel}
+     */
+    public void resetDivvies(){
+        SwingUtilities.invokeLater(new Runnable(){
+
+            public void run() {
+                for(int i = 0; i < data.size(); i++){
+                    ((Divvy)data.get(i)).reset();
+                }
+            }
+
+        });
+        transactionModel.clearAll();
+    }
+    /**
      * give a table the {@code DivvyManager}'s transaction table model
      * @param table
      */
